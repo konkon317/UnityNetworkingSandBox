@@ -25,6 +25,9 @@ public class Client : MonoBehaviour
     NetworkClient _client = new NetworkClient();
     bool _clientConnected = false;
 
+    [SerializeField]
+    string ipaddress= "127.0.0.1";
+
     // Use this for initialization
     void Start ()
     {
@@ -56,7 +59,7 @@ public class Client : MonoBehaviour
         _client.RegisterHandler(MsgType.Connect, _ => { _clientConnected = true; });
         _client.RegisterHandler(MsgType.Disconnect, _ => { _clientConnected = false; });
         
-        _client.Connect("127.0.0.1", 7000);
+        _client.Connect(ipaddress, 7000);
     }
 
     void Update()

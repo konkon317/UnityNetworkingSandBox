@@ -23,6 +23,9 @@ public class Server: MonoBehaviour
     StringBuilder _builder=new StringBuilder();
 
     byte[] _message;
+
+    [SerializeField]
+    string ipaddress="127.0.0.1";
  
     private void Awake()
     {
@@ -51,7 +54,7 @@ public class Server: MonoBehaviour
         }
         );
 
-        NetworkServer.Listen("127.0.0.1", 7000);
+        NetworkServer.Listen(ipaddress, 7000);
 
         
     }
