@@ -1,0 +1,3 @@
+[submodule "MagicOnion"]
+	path = MagicOnion
+	url = git@github.com:Cysharp/MagicOnion.git
