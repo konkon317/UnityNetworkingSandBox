@@ -8,7 +8,7 @@ using System.Text;
 public class Client : MonoBehaviour
 {
 
-    const short MessageTypeTest = MsgType.Highest + 1;
+    const short _messageTypeTest = MsgType.Highest + 1;
 
     // Update is called once per frame
 
@@ -26,7 +26,7 @@ public class Client : MonoBehaviour
     bool _clientConnected = false;
 
     [SerializeField]
-    string ipaddress= "127.0.0.1";
+    string _ipaddress= "127.0.0.1";
 
     // Use this for initialization
     void Start ()
@@ -37,7 +37,7 @@ public class Client : MonoBehaviour
             _message[i] = (byte)(15 + i);
         }
 
-        _client.RegisterHandler(MessageTypeTest, networkMessage =>
+        _client.RegisterHandler(_messageTypeTest, networkMessage =>
         {
             var reader = networkMessage.reader;
             int length = reader.ReadByte() + (256 * reader.ReadByte());
@@ -59,7 +59,7 @@ public class Client : MonoBehaviour
         _client.RegisterHandler(MsgType.Connect, _ => { _clientConnected = true; });
         _client.RegisterHandler(MsgType.Disconnect, _ => { _clientConnected = false; });
         
-        _client.Connect(ipaddress, 7000);
+        _client.Connect(_ipaddress, 7000);
     }
 
     void Update()
@@ -69,7 +69,7 @@ public class Client : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _m.message = _message;
-                _client.Send(MessageTypeTest, _m);
+                _client.Send(_messageTypeTest, _m);
             }
         }
 
