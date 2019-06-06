@@ -11,14 +11,17 @@ using System.Threading.Tasks;
 public class TestServer : MonoBehaviour
 {
     private const int Port = 50051;
-    Grpc.Core.Server server;
+    [SerializeField]
+    string _ipaddress = "localhost";
 
+    Grpc.Core.Server server;
+    
     void Awake()
     {
         server = new Grpc.Core.Server
         {
             Services = { TestProtoBufferService.BindService(new TestProtoBufferImpl("testServer")) },
-            Ports = {new ServerPort("localhost",Port,ServerCredentials.Insecure)}
+            Ports = {new ServerPort(_ipaddress,Port,ServerCredentials.Insecure)}
         };
         server.Start();
     }
