@@ -9,6 +9,9 @@ using Grpc.Core;
 
 using System.Text;
 
+using System.Threading.Tasks;
+using System.Threading;
+
 public class TestClient : MonoBehaviour
 {
     private const int Port = 50051;
@@ -23,6 +26,7 @@ public class TestClient : MonoBehaviour
 
     StringBuilder _builder = new StringBuilder();
 
+    [SerializeField]
     byte[] _byteArray;
 
     ByteString bytestring = ByteString.Empty;
@@ -41,6 +45,7 @@ public class TestClient : MonoBehaviour
                 break;
             }
         }
+
         bytestring = ByteString.CopyFrom(_byteArray);
         _req = new TestRequest { Name = "test", Chunk = bytestring};
 
@@ -49,10 +54,13 @@ public class TestClient : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _builder.Length = 0;
-        _builder.Append(_ipAddress).Append(":").Append(Port.ToString());
+        lock (_builder)
+        {
+            _builder.Length = 0;
+            _builder.Append(_ipAddress).Append(":").Append(Port.ToString());
 
-        Debug.Log(_builder);
+            Debug.Log(_builder);
+        }
 
         _channel = new Channel(_builder.ToString(), ChannelCredentials.Insecure);
 
@@ -62,17 +70,21 @@ public class TestClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+ 
+        _byteArray[0]++;
+
+        byte t = _byteArray[0];
+
+        Task.Run(() =>
         {
-           
 
+            _req.Chunk = ByteString.CopyFrom(_byteArray);
             var name = _client.TestFunc(_req);
-            Debug.Log(name);
-
-         
         }
-    }
+        );
 
+    }
+    
     void OnDestory()
     {
         _channel.ShutdownAsync().Wait();
