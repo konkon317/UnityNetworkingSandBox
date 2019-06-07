@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 public class StreamSub: MonoBehaviour
 {
-    private const int Port = 50051;
+    [SerializeField]
+    private  int Port = 50051;
 
     [SerializeField]
     string name ;
@@ -50,8 +51,7 @@ public class StreamSub: MonoBehaviour
             {
                 byte [] b = _responceStream.ResponseStream.Current.Chunc.ToByteArray();
 
-                _b =b[0];
-                Debug.Log(b[0]);
+                _b =b[0];                
             }
         }
     }

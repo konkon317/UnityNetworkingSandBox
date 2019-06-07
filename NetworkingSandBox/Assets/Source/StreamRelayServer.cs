@@ -13,7 +13,8 @@ using System.Linq;
 
 public class StreamRelayServer: MonoBehaviour
 {
-    private const int Port = 50051;
+    [SerializeField]
+    private int Port = 50051;
 
     [SerializeField]
     string _ipAddress;

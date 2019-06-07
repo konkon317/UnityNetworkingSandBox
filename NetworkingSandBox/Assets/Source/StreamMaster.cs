@@ -12,7 +12,9 @@ using Grpc.Core;
 public class StreamMaster : MonoBehaviour
 {
 
-    private const int Port = 50051;
+    [SerializeField]
+    private int Port = 50051;
+
     byte[] array=new byte [1024];
 
     [SerializeField]
