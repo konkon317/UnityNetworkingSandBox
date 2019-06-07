@@ -22,8 +22,11 @@ public class StreamSub: MonoBehaviour
 
     Channel _channel = null;    
 
-[SerializeField]
-byte _b =0;
+    [SerializeField]
+    byte _b =0;
+
+    public byte B { get { return _b; } }
+
     private void Awake()
     {
         
