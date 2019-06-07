@@ -27,11 +27,11 @@ namespace StreamTest {
             "ChBzdHJlYW1UZXN0LnByb3RvEgpTdHJlYW1UZXN0IgcKBUVtcHR5IhwKDFN1",
             "YnNjcmliZVJlcRIMCgRuYW1lGAEgASgJIh0KDE1hc3RlclN0cmVhbRINCgVj",
             "aHVuYxgBIAEoDCIqChlTdHJlYW1lZFN1YnNjcmliZVJlc3BvbnNlEg0KBWNo",
-            "dW5jGAEgASgMMksKEFN0cmVhbUZyb21NYXN0ZXISNwoGU3RyZWFtEhguU3Ry",
-            "ZWFtVGVzdC5NYXN0ZXJTdHJlYW0aES5TdHJlYW1UZXN0LkVtcHR5KAEyawoQ",
-            "U3RyZWFtRnJvbVNlcnZlchJXChJTdWJzY3JpYmVTdHJlYW1pbmcSGC5TdHJl",
-            "YW1UZXN0LlN1YnNjcmliZVJlcRolLlN0cmVhbVRlc3QuU3RyZWFtZWRTdWJz",
-            "Y3JpYmVSZXNwb25zZTABYgZwcm90bzM="));
+            "dW5jGAEgASgMMqkBCgtTdHJlYW1SZWxheRJBChBTZW5kTWFzdGVyU3RyZWFt",
+            "EhguU3RyZWFtVGVzdC5NYXN0ZXJTdHJlYW0aES5TdHJlYW1UZXN0LkVtcHR5",
+            "KAESVwoSU3Vic2NyaWJlU3RyZWFtaW5nEhguU3RyZWFtVGVzdC5TdWJzY3Jp",
+            "YmVSZXEaJS5TdHJlYW1UZXN0LlN0cmVhbWVkU3Vic2NyaWJlUmVzcG9uc2Uw",
+            "AWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {

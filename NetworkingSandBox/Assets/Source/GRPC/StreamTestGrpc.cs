@@ -8,99 +8,21 @@
 using grpc = global::Grpc.Core;
 
 namespace StreamTest {
-  public static partial class StreamFromMaster
+  public static partial class StreamRelay
   {
-    static readonly string __ServiceName = "StreamTest.StreamFromMaster";
+    static readonly string __ServiceName = "StreamTest.StreamRelay";
 
     static readonly grpc::Marshaller<global::StreamTest.MasterStream> __Marshaller_StreamTest_MasterStream = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::StreamTest.MasterStream.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::StreamTest.Empty> __Marshaller_StreamTest_Empty = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::StreamTest.Empty.Parser.ParseFrom);
-
-    static readonly grpc::Method<global::StreamTest.MasterStream, global::StreamTest.Empty> __Method_Stream = new grpc::Method<global::StreamTest.MasterStream, global::StreamTest.Empty>(
-        grpc::MethodType.ClientStreaming,
-        __ServiceName,
-        "Stream",
-        __Marshaller_StreamTest_MasterStream,
-        __Marshaller_StreamTest_Empty);
-
-    /// <summary>Service descriptor</summary>
-    public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
-    {
-      get { return global::StreamTest.StreamTestReflection.Descriptor.Services[0]; }
-    }
-
-    /// <summary>Base class for server-side implementations of StreamFromMaster</summary>
-    [grpc::BindServiceMethod(typeof(StreamFromMaster), "BindService")]
-    public abstract partial class StreamFromMasterBase
-    {
-      public virtual global::System.Threading.Tasks.Task<global::StreamTest.Empty> Stream(grpc::IAsyncStreamReader<global::StreamTest.MasterStream> requestStream, grpc::ServerCallContext context)
-      {
-        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
-      }
-
-    }
-
-    /// <summary>Client for StreamFromMaster</summary>
-    public partial class StreamFromMasterClient : grpc::ClientBase<StreamFromMasterClient>
-    {
-      /// <summary>Creates a new client for StreamFromMaster</summary>
-      /// <param name="channel">The channel to use to make remote calls.</param>
-      public StreamFromMasterClient(grpc::Channel channel) : base(channel)
-      {
-      }
-      /// <summary>Creates a new client for StreamFromMaster that uses a custom <c>CallInvoker</c>.</summary>
-      /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
-      public StreamFromMasterClient(grpc::CallInvoker callInvoker) : base(callInvoker)
-      {
-      }
-      /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
-      protected StreamFromMasterClient() : base()
-      {
-      }
-      /// <summary>Protected constructor to allow creation of configured clients.</summary>
-      /// <param name="configuration">The client configuration.</param>
-      protected StreamFromMasterClient(ClientBaseConfiguration configuration) : base(configuration)
-      {
-      }
-
-      public virtual grpc::AsyncClientStreamingCall<global::StreamTest.MasterStream, global::StreamTest.Empty> Stream(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return Stream(new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      public virtual grpc::AsyncClientStreamingCall<global::StreamTest.MasterStream, global::StreamTest.Empty> Stream(grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncClientStreamingCall(__Method_Stream, null, options);
-      }
-      /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
-      protected override StreamFromMasterClient NewInstance(ClientBaseConfiguration configuration)
-      {
-        return new StreamFromMasterClient(configuration);
-      }
-    }
-
-    /// <summary>Creates service definition that can be registered with a server</summary>
-    /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
-    public static grpc::ServerServiceDefinition BindService(StreamFromMasterBase serviceImpl)
-    {
-      return grpc::ServerServiceDefinition.CreateBuilder()
-          .AddMethod(__Method_Stream, serviceImpl.Stream).Build();
-    }
-
-    /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
-    /// Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
-    /// <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
-    /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
-    public static void BindService(grpc::ServiceBinderBase serviceBinder, StreamFromMasterBase serviceImpl)
-    {
-      serviceBinder.AddMethod(__Method_Stream, serviceImpl == null ? null : new grpc::ClientStreamingServerMethod<global::StreamTest.MasterStream, global::StreamTest.Empty>(serviceImpl.Stream));
-    }
-
-  }
-  public static partial class StreamFromServer
-  {
-    static readonly string __ServiceName = "StreamTest.StreamFromServer";
-
     static readonly grpc::Marshaller<global::StreamTest.SubscribeReq> __Marshaller_StreamTest_SubscribeReq = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::StreamTest.SubscribeReq.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::StreamTest.StreamedSubscribeResponse> __Marshaller_StreamTest_StreamedSubscribeResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::StreamTest.StreamedSubscribeResponse.Parser.ParseFrom);
+
+    static readonly grpc::Method<global::StreamTest.MasterStream, global::StreamTest.Empty> __Method_SendMasterStream = new grpc::Method<global::StreamTest.MasterStream, global::StreamTest.Empty>(
+        grpc::MethodType.ClientStreaming,
+        __ServiceName,
+        "SendMasterStream",
+        __Marshaller_StreamTest_MasterStream,
+        __Marshaller_StreamTest_Empty);
 
     static readonly grpc::Method<global::StreamTest.SubscribeReq, global::StreamTest.StreamedSubscribeResponse> __Method_SubscribeStreaming = new grpc::Method<global::StreamTest.SubscribeReq, global::StreamTest.StreamedSubscribeResponse>(
         grpc::MethodType.ServerStreaming,
@@ -112,13 +34,18 @@ namespace StreamTest {
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
-      get { return global::StreamTest.StreamTestReflection.Descriptor.Services[1]; }
+      get { return global::StreamTest.StreamTestReflection.Descriptor.Services[0]; }
     }
 
-    /// <summary>Base class for server-side implementations of StreamFromServer</summary>
-    [grpc::BindServiceMethod(typeof(StreamFromServer), "BindService")]
-    public abstract partial class StreamFromServerBase
+    /// <summary>Base class for server-side implementations of StreamRelay</summary>
+    [grpc::BindServiceMethod(typeof(StreamRelay), "BindService")]
+    public abstract partial class StreamRelayBase
     {
+      public virtual global::System.Threading.Tasks.Task<global::StreamTest.Empty> SendMasterStream(grpc::IAsyncStreamReader<global::StreamTest.MasterStream> requestStream, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
       public virtual global::System.Threading.Tasks.Task SubscribeStreaming(global::StreamTest.SubscribeReq request, grpc::IServerStreamWriter<global::StreamTest.StreamedSubscribeResponse> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
@@ -126,29 +53,37 @@ namespace StreamTest {
 
     }
 
-    /// <summary>Client for StreamFromServer</summary>
-    public partial class StreamFromServerClient : grpc::ClientBase<StreamFromServerClient>
+    /// <summary>Client for StreamRelay</summary>
+    public partial class StreamRelayClient : grpc::ClientBase<StreamRelayClient>
     {
-      /// <summary>Creates a new client for StreamFromServer</summary>
+      /// <summary>Creates a new client for StreamRelay</summary>
       /// <param name="channel">The channel to use to make remote calls.</param>
-      public StreamFromServerClient(grpc::Channel channel) : base(channel)
+      public StreamRelayClient(grpc::Channel channel) : base(channel)
       {
       }
-      /// <summary>Creates a new client for StreamFromServer that uses a custom <c>CallInvoker</c>.</summary>
+      /// <summary>Creates a new client for StreamRelay that uses a custom <c>CallInvoker</c>.</summary>
       /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
-      public StreamFromServerClient(grpc::CallInvoker callInvoker) : base(callInvoker)
+      public StreamRelayClient(grpc::CallInvoker callInvoker) : base(callInvoker)
       {
       }
       /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
-      protected StreamFromServerClient() : base()
+      protected StreamRelayClient() : base()
       {
       }
       /// <summary>Protected constructor to allow creation of configured clients.</summary>
       /// <param name="configuration">The client configuration.</param>
-      protected StreamFromServerClient(ClientBaseConfiguration configuration) : base(configuration)
+      protected StreamRelayClient(ClientBaseConfiguration configuration) : base(configuration)
       {
       }
 
+      public virtual grpc::AsyncClientStreamingCall<global::StreamTest.MasterStream, global::StreamTest.Empty> SendMasterStream(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return SendMasterStream(new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncClientStreamingCall<global::StreamTest.MasterStream, global::StreamTest.Empty> SendMasterStream(grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncClientStreamingCall(__Method_SendMasterStream, null, options);
+      }
       public virtual grpc::AsyncServerStreamingCall<global::StreamTest.StreamedSubscribeResponse> SubscribeStreaming(global::StreamTest.SubscribeReq request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return SubscribeStreaming(request, new grpc::CallOptions(headers, deadline, cancellationToken));
@@ -158,17 +93,18 @@ namespace StreamTest {
         return CallInvoker.AsyncServerStreamingCall(__Method_SubscribeStreaming, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
-      protected override StreamFromServerClient NewInstance(ClientBaseConfiguration configuration)
+      protected override StreamRelayClient NewInstance(ClientBaseConfiguration configuration)
       {
-        return new StreamFromServerClient(configuration);
+        return new StreamRelayClient(configuration);
       }
     }
 
     /// <summary>Creates service definition that can be registered with a server</summary>
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
-    public static grpc::ServerServiceDefinition BindService(StreamFromServerBase serviceImpl)
+    public static grpc::ServerServiceDefinition BindService(StreamRelayBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
+          .AddMethod(__Method_SendMasterStream, serviceImpl.SendMasterStream)
           .AddMethod(__Method_SubscribeStreaming, serviceImpl.SubscribeStreaming).Build();
     }
 
@@ -176,8 +112,9 @@ namespace StreamTest {
     /// Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
     /// <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
-    public static void BindService(grpc::ServiceBinderBase serviceBinder, StreamFromServerBase serviceImpl)
+    public static void BindService(grpc::ServiceBinderBase serviceBinder, StreamRelayBase serviceImpl)
     {
+      serviceBinder.AddMethod(__Method_SendMasterStream, serviceImpl == null ? null : new grpc::ClientStreamingServerMethod<global::StreamTest.MasterStream, global::StreamTest.Empty>(serviceImpl.SendMasterStream));
       serviceBinder.AddMethod(__Method_SubscribeStreaming, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::StreamTest.SubscribeReq, global::StreamTest.StreamedSubscribeResponse>(serviceImpl.SubscribeStreaming));
     }
 
