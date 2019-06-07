@@ -50,15 +50,9 @@ public class StreamRelayImpl :StreamRelay.StreamRelayBase
         public int sendedChunks;
         public bool active;
         public IServerStreamWriter<StreamedSubscribeResponse> responseStream;
-    }
 
-    struct ChunkAndFrame
-    {
-        public byte[] Chunk;
+        public StreamedSubscribeResponse responceMessage = new StreamedSubscribeResponse();
     }
-
-    List<ChunkAndFrame> _chunkAndFrames = new List<ChunkAndFrame>();
-    int pooledChunks=0;
 
     public override async Task<Empty> SendMasterStream(IAsyncStreamReader<MasterStream> requestStream, ServerCallContext context)
     {
@@ -70,16 +64,22 @@ public class StreamRelayImpl :StreamRelay.StreamRelayBase
             
             foreach(var subscribers in _responceStreamDic.Values)
             {
-                await SendToSubscriber(subscribers.responseStream, chunk) ;
+                subscribers.responceMessage.Chunc=ByteString.CopyFrom(chunk.ToByteArray());
+                SendToSubscriber(subscribers.responseStream, subscribers.responceMessage) ;
             }
+        }
+
+        foreach(var subscribers in _responceStreamDic.Values)
+        {
+               subscribers.active=false;
         }
 
         return emp;
     }
 
-    public void SendToSubscriber(IServerStreamWriter<StreamedSubscribeResponse> responseStream,ByteString bytestring)
+    public void SendToSubscriber(IServerStreamWriter<StreamedSubscribeResponse> responseStream,StreamedSubscribeResponse res)
     {
-        await responseStream.WriteAsync(new StreamedSubscribeResponse() { Chunc = bytestring });
+        Task.Run(()=>responseStream.WriteAsync(res));
     }
 
     public override async Task SubscribeStreaming(SubscribeReq request, IServerStreamWriter<StreamedSubscribeResponse> responseStream, ServerCallContext context)
@@ -87,7 +87,6 @@ public class StreamRelayImpl :StreamRelay.StreamRelayBase
         if (!_responceStreamDic.ContainsKey(request.Name) || _responceStreamDic[request.Name].active == false)
         {
             _responceStreamDic[request.Name] = new SubStreamoInfo();
-            _responceStreamDic[request.Name].sendedChunks = 0;
             _responceStreamDic[request.Name].active = true;
             _responceStreamDic[request.Name].responseStream = responseStream;
         }
@@ -98,10 +97,11 @@ public class StreamRelayImpl :StreamRelay.StreamRelayBase
                 
         while (_responceStreamDic[request.Name].active)
         {
-
             await Task.Delay(100);
             continue;                     
         }        
+
+        _responceStreamDic[request.Name].responseStream=null;
     }
 
     

@@ -14,12 +14,16 @@ public class StreamSub: MonoBehaviour
     private const int Port = 50051;
 
     [SerializeField]
+    string name ;
+    [SerializeField]
     string _ipAddress = "";
 
     StreamRelay.StreamRelayClient _client;
 
     Channel _channel = null;    
 
+[SerializeField]
+byte _b =0;
     private void Awake()
     {
         
@@ -37,12 +41,13 @@ public class StreamSub: MonoBehaviour
     private async Task StartSubscribeStream()
     {
         using (var _responceStream
-             = _client.SubscribeStreaming(new SubscribeReq { Name = "A" }))
+             = _client.SubscribeStreaming(new SubscribeReq { Name = name }))
         {
             while (await _responceStream.ResponseStream.MoveNext())
             {
                 byte [] b = _responceStream.ResponseStream.Current.Chunc.ToByteArray();
 
+                _b =b[0];
                 Debug.Log(b[0]);
             }
         }

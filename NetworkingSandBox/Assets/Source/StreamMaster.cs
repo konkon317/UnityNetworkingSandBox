@@ -51,7 +51,7 @@ public class StreamMaster : MonoBehaviour
 
 
         masterStream.Chunc = ByteString.CopyFrom(array);
-
+        
         Task.Run(() =>
         {
             _call.RequestStream.WriteAsync(masterStream);
