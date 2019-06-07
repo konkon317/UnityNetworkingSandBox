@@ -27,6 +27,7 @@ public class StreamRelayServer: MonoBehaviour
             Services = { StreamRelay.BindService(new StreamRelayImpl()) },
             Ports = { new ServerPort(_ipAddress, Port, ServerCredentials.Insecure) }
         };
+        
         server.Start();
     }
 
@@ -62,16 +63,18 @@ public class StreamRelayImpl :StreamRelay.StreamRelayBase
             int chunkLength = requestStream.Current.Chunc.Length;
             var chunk= requestStream.Current.Chunc;
             
-            foreach(var subscribers in _responceStreamDic.Values)
+            foreach(var key in _responceStreamDic.Keys)
             {
-                subscribers.responceMessage.Chunc=ByteString.CopyFrom(chunk.ToByteArray());
-                SendToSubscriber(subscribers.responseStream, subscribers.responceMessage) ;
+                _responceStreamDic[key].responceMessage.Chunc=ByteString.CopyFrom(chunk.ToByteArray());
+                SendToSubscriber(_responceStreamDic[key].responseStream, _responceStreamDic[key].responceMessage) ;
+
             }
         }
 
         foreach(var subscribers in _responceStreamDic.Values)
         {
                subscribers.active=false;
+               subscribers.responseStream=null;
         }
 
         return emp;
@@ -98,7 +101,7 @@ public class StreamRelayImpl :StreamRelay.StreamRelayBase
         while (_responceStreamDic[request.Name].active)
         {
             await Task.Delay(100);
-            continue;                     
+                      
         }        
 
         _responceStreamDic[request.Name].responseStream=null;
