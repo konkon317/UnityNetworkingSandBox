@@ -42,7 +42,11 @@ public class StreamMaster : MonoBehaviour
         _channel = new Channel(_ipaddress + ":" + Port.ToString(),ChannelCredentials.Insecure);
 
         _client = new StreamRelay.StreamRelayClient(_channel);
+
         _call = _client.SendMasterStream();
+
+        Debug.Log("call not null => "+(_call!=null).ToString());
+        
     }
 
     void Update()
@@ -67,6 +71,9 @@ public class StreamMaster : MonoBehaviour
     {
         await _call.RequestStream.CompleteAsync();
         await _channel.ShutdownAsync();
+
+        Debug.Log("master stream shut down");
     }
+
 
 }
