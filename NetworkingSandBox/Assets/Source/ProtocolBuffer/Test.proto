@@ -1,0 +1,22 @@
+
+syntax = "proto3";
+
+package testProtoBuffer;
+
+service TestProtoBufferService
+{
+	rpc TestFunc(TestRequest)returns (TestReply){}
+}
+
+message TestRequest
+{
+	string name =1;
+	bytes chunk =2;
+}
+
+message TestReply
+{
+	string name =1;
+}
+
+

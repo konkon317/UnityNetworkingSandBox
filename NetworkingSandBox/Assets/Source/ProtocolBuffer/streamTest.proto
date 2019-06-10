@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package StreamTest;
+
+service StreamRelay
+{
+	rpc SendMasterStream(stream MasterStream)returns(Empty);
+
+	rpc SubscribeStreaming(SubscribeReq)returns(stream StreamedSubscribeResponse); 
+}
+
+
+message Empty
+{
+	
+}
+
+message SubscribeReq
+{
+	string name=1;
+}
+
+message MasterStream
+{
+	bytes chunk =1;
+}
+
+message StreamedSubscribeResponse
+{
+	bytes chunk =1;
+}
+
+
+
