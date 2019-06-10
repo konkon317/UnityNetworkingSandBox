@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using System.Linq;
+
 using StreamTest;
 using Google.Protobuf;
 using Grpc.Core;
@@ -12,20 +14,24 @@ using System.Threading.Tasks;
 public class StreamSub: MonoBehaviour
 {
     [SerializeField]
-    private  int Port = 50051;
+    private  int _port = 50051;
 
     [SerializeField]
-    string name ;
+    string _name ;
+
     [SerializeField]
-    string _ipAddress = "";
+    string _ipAddress = "localhost";
 
     StreamRelay.StreamRelayClient _client;
 
     Channel _channel = null;    
+        
+    Queue< byte[]> _receivedByteArrayQueue=new Queue<byte[]>();
 
-    [SerializeField]
-    byte _b =0;
+    public byte[] CurrentArray { get { return _currentArray; } }
+    byte[] _currentArray = null;
 
+    byte _b;
     public byte B { get { return _b; } }
 
     private void Awake()
@@ -35,30 +41,44 @@ public class StreamSub: MonoBehaviour
 
     private void Start()
     {
-        _channel = new Channel(_ipAddress + ":" + Port.ToString(), ChannelCredentials.Insecure);
+        _channel = new Channel(_ipAddress + ":" + _port.ToString(), ChannelCredentials.Insecure);
 
         _client = new StreamRelay.StreamRelayClient(_channel);
 
         Task.Run(StartSubscribeStream);
     }
 
+    private void Update()
+    {
+        lock(_receivedByteArrayQueue)
+        {
+            if(_receivedByteArrayQueue.Count>0)
+            {
+                _currentArray = _receivedByteArrayQueue.Dequeue();
+            }
+        }
+    }
+
     private async Task StartSubscribeStream()
     {
         using (var _responceStream
-             = _client.SubscribeStreaming(new SubscribeReq { Name = name }))
+             = _client.SubscribeStreaming(new SubscribeReq { Name = _name }))
         {
             while (await _responceStream.ResponseStream.MoveNext())
             {
-                byte [] b = _responceStream.ResponseStream.Current.Chunc.ToByteArray();
+                var array = _responceStream.ResponseStream.Current.Chunc.ToByteArray();
 
-                _b =b[0];                
+                lock (_receivedByteArrayQueue)
+                {
+                    _receivedByteArrayQueue.Enqueue(array);
+                }                                
             }
         }
     }
 
     private void OnDestroy()
     {
-        _channel.ShutdownAsync();
+       Task.Run(()=> _channel.ShutdownAsync());
     }
 
 }

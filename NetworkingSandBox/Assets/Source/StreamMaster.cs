@@ -15,10 +15,10 @@ public class StreamMaster : MonoBehaviour
     [SerializeField]
     private int Port = 50051;
 
-    byte[] array=new byte [1024];
+    byte[] array=new byte [256];
 
     [SerializeField]
-    string _ipaddress = "";
+    string _ipaddress = "localhost";
 
     StreamRelay.StreamRelayClient _client = null;
 
@@ -31,12 +31,10 @@ public class StreamMaster : MonoBehaviour
 
     void Awake()
     {
-        for(int i=0;i<1024;i++)
+        for(int i=0;i<256;i++)
         {
             array[i] = 255;
         }
-        array[0] = 0;
-        
     }
 
     void Start()
@@ -62,8 +60,13 @@ public class StreamMaster : MonoBehaviour
 
     private void OnDestroy()
     {
-        _call.RequestStream.CompleteAsync();
-        _channel.ShutdownAsync().Wait();
+        Task.Run(ShutDownProcess);
+    }
+
+    async Task ShutDownProcess()
+    {
+        await _call.RequestStream.CompleteAsync();
+        await _channel.ShutdownAsync();
     }
 
 }

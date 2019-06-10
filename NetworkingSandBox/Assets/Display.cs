@@ -4,6 +4,8 @@ using UnityEngine;
 
 using UnityEngine.UI;
 
+using System.Text;
+
 public class Display : MonoBehaviour
 {
     [SerializeField]
@@ -13,9 +15,28 @@ public class Display : MonoBehaviour
     Text _text;
 
 
+    StringBuilder _builder=new StringBuilder();
+
     void Update()
     {
-        _text.text = _sub.B.ToString();
+        if (_sub.CurrentArray != null)
+        {
+            var array = _sub.CurrentArray;
+            _builder.Length = 0;
+            foreach (var b in array)
+            {
+                _builder.Append(b).Append("-");
+            }
+
+            _text.text = _builder.ToString();
+
+        }
+        else
+        {
+            _text.text = "no array received";
+        }
+
+       
     }
 
 }
