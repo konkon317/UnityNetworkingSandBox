@@ -8,7 +8,7 @@ using System.Text;
 using TestProtoBuffer;
 using System.Threading.Tasks;
 
-public class TestServer : MonoBehaviour
+public class GrpcTestServer : MonoBehaviour
 {
     private const int Port = 50051;
     [SerializeField]

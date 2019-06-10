@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-public class TestClient : MonoBehaviour
+public class GrpcTestClient : MonoBehaviour
 {
     private const int Port = 50051;
 
